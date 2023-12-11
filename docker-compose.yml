@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000' # Mapeamento da porta do contêiner para a máquina local
+    volumes:
+      - .:/usr/src/app # Volume para sincronizar os arquivos locais com o contêiner
+    environment:
+      - NODE_ENV=development # Defina o ambiente, se necessário
+    restart: always
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_container
+    ports:
+      - '27017:27017' # Mapeamento da porta do host para o contêiner (opcional)
+    environment:
+      MONGO_INITDB_DATABASE: library # Define o nome do banco de dados inicial
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongodb_data:/data/db # Volume para persistir os dados do MongoDB
+
+volumes:
+  mongodb_data:
